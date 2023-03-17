@@ -51,6 +51,7 @@ class _GamePageState extends State<GamePage> {
                 height: 20,
               ),
               _gameContainer(),
+              const Spacer(),
               _restartButton(),
             ],
           ),
