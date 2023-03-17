@@ -51,7 +51,6 @@ class _GamePageState extends State<GamePage> {
                 height: 20,
               ),
               _gameContainer(),
-              const Spacer(),
               _restartButton(),
             ],
           ),
@@ -136,7 +135,7 @@ class _GamePageState extends State<GamePage> {
         child: Center(
           child: Text(
             occupied[index],
-            style: const TextStyle(fontSize: 50),
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.w700),
           ),
         ),
       ),
