@@ -58,10 +58,17 @@ class _MyAppState extends State<MyApp> {
           selectedItemColor: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? Colors.white : const Color(0xff181818),
           unselectedItemColor: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? Colors.grey[700] : Colors.grey,
           backgroundColor: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? const Color(0xff181818) : Colors.white,
+          selectedLabelStyle: const TextStyle(
+            fontFamily: 'Plus_Jakarta_Sans',
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontFamily: 'Plus_Jakarta_Sans',
+          ),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.games_rounded),
               label: "Game",
+              
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

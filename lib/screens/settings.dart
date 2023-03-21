@@ -38,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
             "Settings",
             style: TextStyle(
               color: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? Colors.white : Colors.black,
-              fontFamily: 'Overpass',
+              fontFamily: 'Plus_Jakarta_Sans',
             ),
           ),
           backgroundColor:
@@ -51,9 +51,27 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
               SwitchSettingsTile(
                 title: "Dark Mode",
+                titleTextStyle: const TextStyle(
+                  fontFamily: 'Plus_Jakarta_Sans',
+                  fontSize: 17
+                ),
                 leading: const Icon(Icons.dark_mode),
                 defaultValue: false,
                 settingKey: 'darkMode',
+                onChange: (value) {
+                  setState(() {});
+                  widget.notifySettingsChange();
+                },
+              ),
+              SwitchSettingsTile(
+                title: "Bot",
+                titleTextStyle: const TextStyle(
+                  fontFamily: 'Plus_Jakarta_Sans',
+                  fontSize: 17
+                ),
+                leading: const Icon(Icons.person),
+                defaultValue: false,
+                settingKey: 'bot',
                 onChange: (value) {
                   setState(() {});
                   widget.notifySettingsChange();

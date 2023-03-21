@@ -37,7 +37,7 @@ class _GamePageState extends State<GamePage> {
           : ThemeData.light(
               useMaterial3: true,
             ),
-            debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -45,6 +45,7 @@ class _GamePageState extends State<GamePage> {
             style: TextStyle(
                 fontSize: 50,
                 fontWeight: FontWeight.w900,
+                fontFamily: 'Plus_Jakarta_Sans',
                 color:
                     (Settings.getValue<bool>('darkMode', defaultValue: false))!
                         ? Colors.white
@@ -83,6 +84,7 @@ class _GamePageState extends State<GamePage> {
             style: TextStyle(
                 fontSize: (currentPlayer == "X") ? 40 : 25,
                 fontWeight: FontWeight.w900,
+                fontFamily: 'Plus_Jakarta_Sans',
                 color:
                     (Settings.getValue<bool>('darkMode', defaultValue: false))!
                         ? Colors.white
@@ -93,6 +95,7 @@ class _GamePageState extends State<GamePage> {
             style: TextStyle(
                 fontSize: (currentPlayer == "O") ? 40 : 25,
                 fontWeight: FontWeight.w900,
+                fontFamily: 'Plus_Jakarta_Sans',
                 color:
                     (Settings.getValue<bool>('darkMode', defaultValue: false))!
                         ? Colors.white
@@ -134,7 +137,7 @@ class _GamePageState extends State<GamePage> {
           checkForDraw();
         });
 
-        if (!gameEnd && currentPlayer == playerO) {
+        if (!gameEnd && currentPlayer == playerO && (Settings.getValue<bool>("bot", defaultValue: false))!) {
           //simulate bot's turn
           int botIndex = getBotIndex();
           occupied[botIndex] = currentPlayer;
@@ -158,10 +161,13 @@ class _GamePageState extends State<GamePage> {
           child: Text(
             occupied[index],
             style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.w700,
-              color: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? Colors.white : const Color(0xff181818)
-            ),
+                fontSize: 50,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Plus_Jakarta_Sans',
+                color:
+                    (Settings.getValue<bool>('darkMode', defaultValue: false))!
+                        ? Colors.white
+                        : const Color(0xff181818)),
           ),
         ),
       ),
@@ -189,7 +195,11 @@ class _GamePageState extends State<GamePage> {
           child: const Text(
             " R I G I O C A ",
             style: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+              fontFamily: 'Plus_Jakarta_Sans',
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
