@@ -1,6 +1,6 @@
-import 'dart:ui';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class GamePage extends StatefulWidget {
   @override
@@ -29,30 +29,43 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "TicTac-All!",
-          style: TextStyle(
-            fontSize: 50,
-            fontWeight: FontWeight.w900,
+    return MaterialApp(
+      theme: (Settings.getValue<bool>('darkMode', defaultValue: false))!
+          ? ThemeData.dark(
+              useMaterial3: true,
+            )
+          : ThemeData.light(
+              useMaterial3: true,
+            ),
+            debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "TicTac-All!",
+            style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.w900,
+                color:
+                    (Settings.getValue<bool>('darkMode', defaultValue: false))!
+                        ? Colors.white
+                        : const Color(0xff181818)),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _headerText(),
-              const SizedBox(
-                height: 20,
-              ),
-              _gameContainer(),
-              _restartButton(),
-            ],
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _headerText(),
+                const SizedBox(
+                  height: 20,
+                ),
+                _gameContainer(),
+                _restartButton(),
+              ],
+            ),
           ),
         ),
       ),
@@ -68,24 +81,22 @@ class _GamePageState extends State<GamePage> {
           Text(
             "X",
             style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              decoration: TextDecoration.underline,
-              decorationThickness: 4,
-              decorationColor:
-                  (currentPlayer == "X") ? Colors.black : Colors.white,
-            ),
+                fontSize: (currentPlayer == "X") ? 40 : 25,
+                fontWeight: FontWeight.w900,
+                color:
+                    (Settings.getValue<bool>('darkMode', defaultValue: false))!
+                        ? Colors.white
+                        : const Color(0xff181818)),
           ),
           Text(
             "O",
             style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              decoration: TextDecoration.underline,
-              decorationThickness: 4,
-              decorationColor:
-                  (currentPlayer == "X") ? Colors.white : Colors.black,
-            ),
+                fontSize: (currentPlayer == "O") ? 40 : 25,
+                fontWeight: FontWeight.w900,
+                color:
+                    (Settings.getValue<bool>('darkMode', defaultValue: false))!
+                        ? Colors.white
+                        : const Color(0xff181818)),
           ),
         ],
       ),
@@ -122,10 +133,21 @@ class _GamePageState extends State<GamePage> {
           checkForWinner();
           checkForDraw();
         });
+
+        if (!gameEnd && currentPlayer == playerO) {
+          //simulate bot's turn
+          int botIndex = getBotIndex();
+          occupied[botIndex] = currentPlayer;
+          changeTurn();
+          checkForWinner();
+          checkForDraw();
+        }
       },
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: (Settings.getValue<bool>('darkMode', defaultValue: false))!
+                ? const Color(0xff181818)
+                : Colors.white,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: const Color(0xff363636),
@@ -135,7 +157,11 @@ class _GamePageState extends State<GamePage> {
         child: Center(
           child: Text(
             occupied[index],
-            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.w700),
+            style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.w700,
+              color: (Settings.getValue<bool>('darkMode', defaultValue: false))! ? Colors.white : const Color(0xff181818)
+            ),
           ),
         ),
       ),
@@ -163,14 +189,24 @@ class _GamePageState extends State<GamePage> {
           child: const Text(
             " R I G I O C A ",
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w700
-            ),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
       ),
     );
+  }
+
+  int getBotIndex() {
+    //get available indices
+    List<int> available = [];
+    for (int i = 0; i < occupied.length; i++) {
+      if (occupied[i].isEmpty) {
+        available.add(i);
+      }
+    }
+
+    //return random index from available indices
+    return available[Random().nextInt(available.length)];
   }
 
   changeTurn() {
@@ -236,10 +272,7 @@ class _GamePageState extends State<GamePage> {
           content: Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600
-            ),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           )),
     );
   }
